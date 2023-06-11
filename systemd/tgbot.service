@@ -3,11 +3,11 @@ Description=Course Bot
 After=network.target
 
 [Service]
-User=tgbot
-Group=tgbot
+User=tgbot_template
+Group=tgbot_template
 Type=simple
-WorkingDirectory=/opt/tgbot
-ExecStart=/opt/tgbot/venv/bin/python bot.py
+WorkingDirectory=/opt/tgbot_template/app
+ExecStart=/opt/tgbot_template/venv/bin/python bot.py
 Restart=always
 
 [Install]
