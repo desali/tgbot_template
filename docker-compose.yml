@@ -2,21 +2,38 @@ version: '3.3'
 
 services:
   bot:
-    container_name: "tgbot_template_container"
     stop_signal: SIGINT
     build:
       context: .
     working_dir: "/src"
     volumes:
-    - ./app:/src
+      - ./app:/src
     command: python3 -m bot
-    restart: always
+    restart: on-failure
     env_file:
       - ".env"
-    networks:
-    - tgbot_template
-
-
-networks:
-  tgbot_template:
-    driver: bridge
+    depends_on:
+      - db
+      - redis
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test_database
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PORT=6379
+    volumes:
+      - ./redis_data:/data
+    depends_on:
+      - db

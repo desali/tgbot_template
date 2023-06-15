@@ -11,14 +11,14 @@ class DbMiddleware(LifetimeControllerMiddleware):
         self.pool = pool
 
     async def pre_process(self, obj, data, *args):
-        db = await self.pool.acquire()
-        data["db"] = db
-        data["repo"] = Repo(db)
+        conn = await self.pool.acquire()
+        data["conn"] = conn
+        data["repo"] = Repo(conn)
 
     async def post_process(self, obj, data, *args):
         del data["repo"]
-        db = data.get("db")
-        if db:
+        conn = data.get("conn")
+        if conn:
             # check the documentation of your pool implementation
             # for proper way of releasing connection
-            await self.pool.release(db)
+            await self.pool.release(conn)
