@@ -98,11 +98,12 @@ async def main():
         await connection_pool.close()
         await dp.storage.close()
         await dp.storage.wait_closed()
-        await bot.session.close()
+        session = await bot.get_session()
+        await session.close()
 
 
 if __name__ == '__main__':
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        logger.error("Bot stopped!")
+        logger.info("Bot stopped!")
