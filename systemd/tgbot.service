@@ -1,5 +1,5 @@
 [Unit]
-Description=Course Bot
+Description=tgbot_template
 After=network.target
 
 [Service]
